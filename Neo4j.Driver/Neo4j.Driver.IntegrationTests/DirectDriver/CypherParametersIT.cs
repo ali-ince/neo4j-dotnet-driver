@@ -30,8 +30,8 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
     {
         private IDriver Driver => Server.Driver;
 
-        public CypherParametersIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) 
-            : base(output, fixture)
+        public CypherParametersIT(ITestOutputHelper output) 
+            : base(output)
         {
 
         }
@@ -41,16 +41,16 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (n:Person { name: 'Johan' })");
+                var result = session.Run($"CREATE (n:{Label} {{ name: 'Johan' }})");
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n:Person) WHERE n.name = $name RETURN n", new {name = "Johan"});
+                result = session.Run($"MATCH (n:{Label}) WHERE n.name = $name RETURN n", new {name = "Johan"});
                 var list = result.Select(r => r).ToList();
                 list.Should().HaveCount(1);
 
                 var node = (INode) list.First()[0];
                 node.Should().NotBeNull();
-                node.Labels.Should().Contain("Person");
+                node.Labels.Should().Contain($"{Label}");
                 node.Properties.Should().HaveCount(1);
                 node.Properties.Should().Contain(new KeyValuePair<string, object>("name", "Johan"));
             }
@@ -61,10 +61,10 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (n:Person { name: 'Johan' })");
+                var result = session.Run($"CREATE (n:{Label} {{ name: 'Johan' }})");
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n:Person) WHERE n.name =~ $regex RETURN n.name", new {regex = ".*h.*"});
+                result = session.Run($"MATCH (n:{Label}) WHERE n.name =~ $regex RETURN n.name", new {regex = ".*h.*"});
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(1);
                 list.Should().Contain("Johan");
@@ -76,13 +76,13 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (n:Person { name: 'Michael' })");
+                var result = session.Run($"CREATE (n:{Label} {{ name: 'Michael' }})");
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("CREATE (n:Person { name: 'michael' })");
+                result = session.Run($"CREATE (n:{Label} {{ name: 'michael' }})");
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n:Person) WHERE n.name STARTS WITH $name RETURN n.name", new { name = "Michael" });
+                result = session.Run($"MATCH (n:{Label}) WHERE n.name STARTS WITH $name RETURN n.name", new { name = "Michael" });
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(1);
                 list.Should().Contain("Michael");
@@ -94,10 +94,10 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE ($props)", new { props = new { name = "Andres", position = "Developer" } });
+                var result = session.Run($"CREATE (n:{Label} $props)", new { props = new { name = "Andres", position = "Developer" } });
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n) WHERE n.position = 'Developer' RETURN n.name");
+                result = session.Run($"MATCH (n:{Label}) WHERE n.position = 'Developer' RETURN n.name");
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(1);
                 list.Should().Contain("Andres");
@@ -109,7 +109,7 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("UNWIND $props AS properties CREATE(n:Person) SET n = properties",
+                var result = session.Run($"UNWIND $props AS properties CREATE(n:{Label}) SET n = properties",
                     new {props = new object[]
                     {
                         new { awesome = true, name = "Andres", position = "Developer"},
@@ -118,7 +118,7 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
                     });
                 result.Summary.Counters.NodesCreated.Should().Be(2);
 
-                result = session.Run("MATCH (n) WHERE n.position = 'Developer' RETURN n.name");
+                result = session.Run($"MATCH (n:{Label}) WHERE n.position = 'Developer' RETURN n.name");
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(2);
                 list.Should().Contain("Andres", "Michael");
@@ -130,14 +130,14 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (n:Person { name: 'Michaela' })");
+                var result = session.Run($"CREATE (n:{Label} {{ name: 'Michaela' }})");
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n:Person) WHERE n.name = 'Michaela' SET n = $props",
+                result = session.Run($"MATCH (n:{Label}) WHERE n.name = 'Michaela' SET n = $props",
                     new {props = new {name = "Andres", position = "Developer"}});
                 result.Summary.Counters.PropertiesSet.Should().Be(2);
 
-                result = session.Run("MATCH (n:Person) WHERE n.name = $name RETURN n.position", new { name = "Andres" });
+                result = session.Run($"MATCH (n:{Label}) WHERE n.name = $name RETURN n.position", new { name = "Andres" });
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(1);
                 list.Should().Contain("Developer");
@@ -163,11 +163,11 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (n:Person { name: 'Michaela' }) RETURN id(n)");
+                var result = session.Run($"CREATE (n:{Label} {{ name: 'Michaela' }}) RETURN id(n)");
                 var id = result.Select(r => (long)r[0]).Single();
                 result.Summary.Counters.NodesCreated.Should().Be(1);
 
-                result = session.Run("MATCH (n) WHERE id(n) = $id RETURN n.name", new {id = id});
+                result = session.Run($"MATCH (n:{Label}) WHERE id(n) = $id RETURN n.name", new {id = id});
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(1);
                 list.Should().Contain("Michaela");
@@ -179,7 +179,7 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("UNWIND $props AS properties CREATE(n:Person) SET n = properties RETURN id(n)",
+                var result = session.Run($"UNWIND $props AS properties CREATE(n:{Label}) SET n = properties RETURN id(n)",
                     new
                     {
                         props = new List<object>()
@@ -192,7 +192,7 @@ namespace Neo4j.Driver.IntegrationTests.DirectDriver
                 var ids = result.Select(r => (long)r[0]).ToArray();
                 result.Summary.Counters.NodesCreated.Should().Be(3);
 
-                result = session.Run("MATCH (n) WHERE id(n) IN $idList RETURN n.name", new { idList = ids });
+                result = session.Run($"MATCH (n:{Label}) WHERE id(n) IN $idList RETURN n.name", new { idList = ids });
                 var list = result.Select(r => r[0]).ToList();
                 list.Should().HaveCount(3);
                 list.Should().Contain("Johan", "Michaela", "Andres");

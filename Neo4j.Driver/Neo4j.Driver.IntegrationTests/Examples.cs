@@ -31,10 +31,11 @@ namespace Neo4j.Driver.Examples
     /// </summary>
     public class Examples
     {
+
         public class AutocommitTransactionExample : BaseExample
         {
-            public AutocommitTransactionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public AutocommitTransactionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -60,8 +61,8 @@ namespace Neo4j.Driver.Examples
 
         public class BasicAuthExample : BaseExample
         {
-            public BasicAuthExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public BasicAuthExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -88,7 +89,7 @@ namespace Neo4j.Driver.Examples
         public class ConfigConnectionPoolExample : BaseExample
         {
             public ConfigConnectionPoolExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+                : base(output)
             {
             }
 
@@ -120,8 +121,8 @@ namespace Neo4j.Driver.Examples
 
         public class ConfigLoadBalancingStrategyExample : BaseExample
         {
-            public ConfigLoadBalancingStrategyExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigLoadBalancingStrategyExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -151,8 +152,8 @@ namespace Neo4j.Driver.Examples
 
         public class ConfigConnectionTimeoutExample : BaseExample
         {
-            public ConfigConnectionTimeoutExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigConnectionTimeoutExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -179,8 +180,8 @@ namespace Neo4j.Driver.Examples
 
         public class ConfigMaxRetryTimeExample : BaseExample
         {
-            public ConfigMaxRetryTimeExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigMaxRetryTimeExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -207,8 +208,8 @@ namespace Neo4j.Driver.Examples
 
         public class ConfigTrustExample : BaseExample
         {
-            public ConfigTrustExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigTrustExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -235,8 +236,8 @@ namespace Neo4j.Driver.Examples
 
         public class ConfigUnencryptedExample : BaseExample
         {
-            public ConfigUnencryptedExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigUnencryptedExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -263,8 +264,8 @@ namespace Neo4j.Driver.Examples
 
         public class CustomAuthExample : BaseExample
         {
-            public CustomAuthExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public CustomAuthExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -292,8 +293,8 @@ namespace Neo4j.Driver.Examples
 
         public class KerberosAuthExample : BaseExample
         {
-            public KerberosAuthExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public KerberosAuthExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -319,8 +320,8 @@ namespace Neo4j.Driver.Examples
 
         public class CypherErrorExample : BaseExample
         {
-            public CypherErrorExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public CypherErrorExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -358,8 +359,8 @@ namespace Neo4j.Driver.Examples
 
         public class DriverLifecycleExampleTest : BaseExample
         {
-            public DriverLifecycleExampleTest(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public DriverLifecycleExampleTest(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -395,8 +396,8 @@ namespace Neo4j.Driver.Examples
 
         public class HelloWorldExampleTest : BaseExample
         {
-            public HelloWorldExampleTest(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public HelloWorldExampleTest(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -455,8 +456,8 @@ namespace Neo4j.Driver.Examples
 
         public class ReadWriteTransactionExample : BaseExample
         {
-            public ReadWriteTransactionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ReadWriteTransactionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -464,7 +465,7 @@ namespace Neo4j.Driver.Examples
             public void TestReadWriteTransactionExample()
             {
                 // When & Then
-                AddPerson("Alice").Should().BeGreaterOrEqualTo(0L);
+                AddPerson("Addison").Should().BeGreaterOrEqualTo(0L);
             }
 
             // tag::read-write-transaction[]
@@ -492,8 +493,8 @@ namespace Neo4j.Driver.Examples
 
         public class ResultConsumeExample : BaseExample
         {
-            public ResultConsumeExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ResultConsumeExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -515,17 +516,17 @@ namespace Neo4j.Driver.Examples
             public void TestResultConsumeExample()
             {
                 // Given
-                Write("CREATE (a:Person {name: 'Alice'})");
-                Write("CREATE (a:Person {name: 'Bob'})");
+                Write("CREATE (a:Person {name: 'Ainsley'})");
+                Write("CREATE (a:Person {name: 'Armstrong'})");
                 // When & Then
-                GetPeople().Should().Contain(new[] {"Alice", "Bob"});
+                GetPeople().Should().Contain(new[] { "Ainsley", "Armstrong" });
             }
         }
 
         public class ResultRetainExample : BaseExample
         {
-            public ResultRetainExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ResultRetainExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -534,13 +535,13 @@ namespace Neo4j.Driver.Examples
             {
                 using (var session = Driver.Session())
                 {
-                    var persons = session.ReadTransaction(tx => tx.Run("MATCH (a:Person) RETURN a.name AS name").ToList());
-                    return persons.Sum(person => session.WriteTransaction(tx =>
+                    var employees = session.ReadTransaction(tx => tx.Run("MATCH (a:Employee) RETURN a.name AS name").ToList());
+                    return employees.Sum(employee => session.WriteTransaction(tx =>
                     {
-                        tx.Run("MATCH (emp:Person {name: $person_name}) " +
+                        tx.Run("MATCH (emp:Employee {name: $person_name}) " +
                             "MERGE (com:Company {name: $company_name}) " +
                             "MERGE (emp)-[:WORKS_FOR]->(com)",
-                            new {person_name = person["name"].As<string>(), company_name = companyName});
+                            new {person_name = employee["name"].As<string>(), company_name = companyName});
                         return 1;
                     }));
                 }
@@ -551,34 +552,30 @@ namespace Neo4j.Driver.Examples
             public void TestResultConsumeExample()
             {
                 // Given
-                Write("CREATE (a:Person {name: 'Alice'})");
-                Write("CREATE (a:Person {name: 'Bob'})");
+                Write("CREATE (a:Employee {name: 'Alice'})");
+                Write("CREATE (a:Employee {name: 'Bob'})");
                 // When & Then
                 AddEmployees("Acme").Should().Be(2);
-                Read("MATCH (emp:Person)-[WORKS_FOR]->(com:Company) WHERE com.name = 'Acme' RETURN count(emp)")
+                Read("MATCH (emp:Employee)-[WORKS_FOR]->(com:Company) WHERE com.name = 'Acme' RETURN count(emp)")
                     .Single()[0].As<int>().Should().Be(2);
             }
         }
 
-        public class ServiceUnavailableExample : BaseExample
+        public class ServiceUnavailableExample: IDisposable
         {
-            private readonly IDriver _baseDriver;
+            private readonly IDriver Driver;
+            private readonly string User = "neo4j";
+            private readonly string Password = "neo4j";
 
-            public ServiceUnavailableExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ServiceUnavailableExample(ITestOutputHelper output)
             {
-                _baseDriver = Driver;
                 Driver = GraphDatabase.Driver("bolt://localhost:8080", AuthTokens.Basic(User, Password),
                     new Config {MaxTransactionRetryTime = TimeSpan.FromSeconds(3)});
             }
 
-            protected override void Dispose(bool isDisposing)
+            public void Dispose()
             {
-                if (!isDisposing)
-                    return;
-
-                Driver = _baseDriver;
-                base.Dispose(true);
+                Driver.Dispose();
             }
 
             // tag::service-unavailable[]
@@ -613,8 +610,8 @@ namespace Neo4j.Driver.Examples
 
         public class SessionExample : BaseExample
         {
-            public SessionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public SessionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -632,16 +629,16 @@ namespace Neo4j.Driver.Examples
             public void TestSessionExample()
             {
                 // Given & When
-                AddPerson("Alice");
+                AddPerson("Tom");
                 // Then
-                CountPerson("Alice").Should().Be(1);
+                CountPerson("Tom").Should().Be(1);
             }
         }
 
         public class TransactionFunctionExample : BaseExample
         {
-            public TransactionFunctionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) 
-                : base(output, fixture)
+            public TransactionFunctionExample(ITestOutputHelper output) 
+                : base(output)
             {
             }
 
@@ -659,42 +656,23 @@ namespace Neo4j.Driver.Examples
             public void TestTransactionFunctionExample()
             {
                 // Given & When
-                AddPerson("Alice");
+                AddPerson("Bailey");
                 // Then
-                CountPerson("Alice").Should().Be(1);
+                CountPerson("Bailey").Should().Be(1);
             }
         }
     }
 
-    [Collection(SAIntegrationCollection.CollectionName)]
-    public abstract class BaseExample : IDisposable
+    public abstract class BaseExample : DirectDriverIT
     {
-        protected ITestOutputHelper Output { get; }
         protected IDriver Driver { set; get; }
         protected const string Uri = "bolt://localhost:7687";
         protected const string User = "neo4j";
         protected const string Password = "neo4j";
 
-        protected BaseExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
+        protected BaseExample(ITestOutputHelper output) : base(output)
         {
-            Output = output;
-            Driver = fixture.StandAlone.Driver;
-        }
-
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (!isDisposing)
-                return;
-
-            using (var session = Driver.Session())
-            {
-                session.Run("MATCH (n) DETACH DELETE n").Consume();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            Driver = Server.Driver;
         }
 
         protected int CountPerson(string name)
@@ -702,7 +680,7 @@ namespace Neo4j.Driver.Examples
             using (var session = Driver.Session())
             {
                 return session.ReadTransaction(
-                    tx => tx.Run("MATCH (a:Person {name: $name}) RETURN count(a)",
+                    tx => tx.Run($"MATCH (a:Person {{ name: $name }}) RETURN count(a)",
                     new { name }).Single()[0].As<int>());
             }
         }

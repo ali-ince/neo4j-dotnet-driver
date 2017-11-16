@@ -26,8 +26,8 @@ namespace Neo4j.Driver.IntegrationTests
 {
     public class AuthenticationIT : DirectDriverIT
     {
-        public AuthenticationIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-            : base(output, fixture)
+        public AuthenticationIT(ITestOutputHelper output)
+            : base(output)
         { }
 
         [RequireServerFact]

@@ -23,29 +23,30 @@ using Xunit.Abstractions;
 
 namespace Neo4j.Driver.IntegrationTests
 {
-    [Collection(SAIntegrationCollection.CollectionName)]
-    public abstract class DirectDriverIT : IDisposable
-    {
-        protected ITestOutputHelper Output { get; }
-        protected StandAlone Server { get; }
-        protected Uri ServerEndPoint { get; }
-        protected IAuthToken AuthToken { get; }
+    //[Collection(SAIntegrationCollection.CollectionName)]
+    //public abstract class DirectDriverIT : IDisposable
+    //{
+    //    public static readonly Config DebugConfig = Config.Builder.WithLogger(new DebugLogger {Level = LogLevel.Debug}).ToConfig();
+    //    protected ITestOutputHelper Output { get; }
+    //    protected StandAlone Server { get; }
+    //    protected Uri ServerEndPoint { get; }
+    //    protected IAuthToken AuthToken { get; }
 
-        protected DirectDriverIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-        {
-            Output = output;
-            Server = fixture.StandAlone;
-            ServerEndPoint = Server.BoltUri;
-            AuthToken = Server.AuthToken;
-        }
+    //    protected DirectDriverIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
+    //    {
+    //        Output = output;
+    //        Server = fixture.StandAlone;
+    //        ServerEndPoint = Server.BoltUri;
+    //        AuthToken = Server.AuthToken;
+    //    }
 
-        public void Dispose()
-        {
-            // clean database after each test run
-            using (var session = Server.Driver.Session())
-            {
-                session.Run("MATCH (n) DETACH DELETE n").Consume();
-            }
-        }
-    }
+    //    public void Dispose()
+    //    {
+    //        // clean database after each test run
+    //        using (var session = Server.Driver.Session())
+    //        {
+    //            session.Run("MATCH (n) DETACH DELETE n").Consume();
+    //        }
+    //    }
+    //}
 }

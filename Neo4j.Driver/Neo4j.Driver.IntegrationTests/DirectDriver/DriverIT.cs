@@ -32,7 +32,7 @@ namespace Neo4j.Driver.IntegrationTests
 {
     public class DriverIT : DirectDriverIT
     {
-        public DriverIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) : base(output, fixture)
+        public DriverIT(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -47,7 +47,7 @@ namespace Neo4j.Driver.IntegrationTests
             using (var session = driver.Session())
             {
                 var result = session.Run(
-                    "CREATE (a {value:{value}}) RETURN a.value", new Dictionary<string, object> {{"value", byteArray}});
+                    $"CREATE (a:{Label} {{ value: {{value}} }}) RETURN a.value", new Dictionary<string, object> {{"value", byteArray}});
                 // Then
                 foreach (var record in result)
                 {
@@ -68,7 +68,7 @@ namespace Neo4j.Driver.IntegrationTests
             using (var session = driver.Session())
             {
                 var exception = Record.Exception(() =>
-                            session.Run("CREATE (a {value:{value}})",
+                            session.Run($"CREATE (a:{Label} {{value:{{value}}}})",
                                 new Dictionary<string, object> {{"value", byteArray}}));
 
                 // Then
@@ -239,7 +239,7 @@ namespace Neo4j.Driver.IntegrationTests
             st.ConnToClose.Should().Be(st.ConnClosed);
         }
 
-        
+
 
     }
 }

@@ -54,4 +54,4 @@ using Xunit;
 
 // The integration tests defined in this assembly require a database service running in the background.
 // The tests might rely on certain status of the database, therefore the tests should be executed sequentially.
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
+//[assembly: CollectionBehavior(DisableTestParallelization = true)]

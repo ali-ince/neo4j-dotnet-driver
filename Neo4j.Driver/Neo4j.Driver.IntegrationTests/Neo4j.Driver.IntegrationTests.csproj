@@ -115,6 +115,7 @@
     <Compile Include="ExamplesAsync.cs" />
     <Compile Include="Internals\BoltkitHelper.cs" />
     <Compile Include="Internals\BoltStubServer.cs" />
+    <Compile Include="Internals\DirectDriverIT.cs" />
     <Compile Include="Internals\IntegrationTestAttribute.cs" />
     <Compile Include="Internals\Cluster\CausalCluster.cs" />
     <Compile Include="Internals\Cluster\SingleInstance.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="Internals\IInstaller.cs" />
     <Compile Include="Internals\IShellCommandRunner.cs" />
     <Compile Include="Internals\ISingleInstance.cs" />
+    <Compile Include="Internals\ITHelper.cs" />
+    <Compile Include="Internals\RoutingDriverIT.cs" />
     <Compile Include="Internals\ShellCommandRunnerTests.cs" />
     <Compile Include="Internals\StandAlone\ExternalBoltkitInstaller.cs" />
     <Compile Include="Internals\StandAlone\StandAlone.cs" />

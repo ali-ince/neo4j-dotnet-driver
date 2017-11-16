@@ -28,15 +28,17 @@ namespace Neo4j.Driver.IntegrationTests
     {
         private IDriver Driver => Server.Driver;
 
-        public ResultIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) : base(output, fixture)
-        {}
+        public ResultIT(ITestOutputHelper output) : base(output)
+        {
+            
+        }
 
         [RequireServerFact]
         public void GetsSummary()
         {
             using (var session = Driver.Session())
             {
-                var result = session.Run("CREATE (p:Person { Name: 'Test'})");
+                var result = session.Run($"CREATE (p:{Label} {{ Name: 'Test' }})");
                 var stats = result.Consume().Counters;
                 stats.ToString().Should()
                     .Be("Counters{NodesCreated=1, NodesDeleted=0, RelationshipsCreated=0, " +

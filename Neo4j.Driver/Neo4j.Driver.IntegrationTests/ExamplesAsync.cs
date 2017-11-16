@@ -11,14 +11,15 @@ using Xunit.Abstractions;
 
 namespace Neo4j.Driver.ExamplesAsync
 {
+    [Collection("Examples")]
     public class ExamplesAsync
     {
 
         public class AsyncSectionExamples : BaseAsyncExample
         {
 
-            public AsyncSectionExamples(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public AsyncSectionExamples(ITestOutputHelper output)
+                : base(output)
             {
                 
             }
@@ -176,8 +177,8 @@ namespace Neo4j.Driver.ExamplesAsync
         
         public class AutocommitTransactionExample : BaseAsyncExample
         {
-            public AutocommitTransactionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public AutocommitTransactionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -208,8 +209,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class BasicAuthExample : BaseAsyncExample
         {
-            public BasicAuthExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public BasicAuthExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -243,8 +244,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ConfigConnectionTimeoutExample : BaseAsyncExample
         {
-            public ConfigConnectionTimeoutExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigConnectionTimeoutExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -279,8 +280,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ConfigMaxRetryTimeExample : BaseAsyncExample
         {
-            public ConfigMaxRetryTimeExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigMaxRetryTimeExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -315,8 +316,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ConfigTrustExample : BaseAsyncExample
         {
-            public ConfigTrustExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigTrustExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -351,8 +352,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ConfigUnencryptedExample : BaseAsyncExample
         {
-            public ConfigUnencryptedExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ConfigUnencryptedExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -387,8 +388,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class CustomAuthExample : BaseAsyncExample
         {
-            public CustomAuthExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public CustomAuthExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -424,8 +425,8 @@ namespace Neo4j.Driver.ExamplesAsync
         
         public class CypherErrorExample : BaseAsyncExample
         {
-            public CypherErrorExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public CypherErrorExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -469,8 +470,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class DriverLifecycleExampleTest : BaseAsyncExample
         {
-            public DriverLifecycleExampleTest(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public DriverLifecycleExampleTest(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -514,8 +515,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class HelloWorldExampleTest : BaseAsyncExample
         {
-            public HelloWorldExampleTest(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public HelloWorldExampleTest(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -579,8 +580,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ReadWriteTransactionExample : BaseAsyncExample
         {
-            public ReadWriteTransactionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ReadWriteTransactionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -624,8 +625,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ResultConsumeExample : BaseAsyncExample
         {
-            public ResultConsumeExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ResultConsumeExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -662,8 +663,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ResultRetainExample : BaseAsyncExample
         {
-            public ResultRetainExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ResultRetainExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -715,23 +716,20 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class ServiceUnavailableExample : BaseAsyncExample
         {
-            private readonly IDriver _baseDriver;
+            private readonly IDriver Driver;
+            private readonly string User = "neo4j";
+            private readonly string Password = "neo4j";
 
-            public ServiceUnavailableExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public ServiceUnavailableExample(ITestOutputHelper output)
+                : base(output)
             {
-                _baseDriver = Driver;
                 Driver = GraphDatabase.Driver("bolt://localhost:8080", AuthTokens.Basic(User, Password),
                     new Config { MaxTransactionRetryTime = TimeSpan.FromSeconds(3) });
             }
 
-            protected override void Dispose(bool isDisposing)
+            public void Dispose()
             {
-                if (!isDisposing)
-                    return;
-
-                Driver = _baseDriver;
-                base.Dispose(true);
+                Driver.Dispose();
             }
 
             public async Task<bool> AddItemAsync()
@@ -768,8 +766,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class SessionExample : BaseAsyncExample
         {
-            public SessionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public SessionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -800,8 +798,8 @@ namespace Neo4j.Driver.ExamplesAsync
 
         public class TransactionFunctionExample : BaseAsyncExample
         {
-            public TransactionFunctionExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
-                : base(output, fixture)
+            public TransactionFunctionExample(ITestOutputHelper output)
+                : base(output)
             {
             }
 
@@ -832,37 +830,18 @@ namespace Neo4j.Driver.ExamplesAsync
         }
     }
 
-    [Collection(SAIntegrationCollection.CollectionName)]
-    public abstract class BaseAsyncExample : IDisposable
+    public abstract class BaseAsyncExample : DirectDriverIT
     {
-        protected ITestOutputHelper Output { get; }
         protected IDriver Driver { set; get; }
         protected const string Uri = "bolt://localhost:7687";
         protected const string User = "neo4j";
         protected const string Password = "neo4j";
 
-        protected BaseAsyncExample(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture)
+        protected BaseAsyncExample(ITestOutputHelper output) : base(output)
         {
-            Output = output;
-            Driver = fixture.StandAlone.Driver;
+            Driver = Server.Driver;
         }
 
-        protected virtual void Dispose(bool isDisposing)
-        {
-            if (!isDisposing)
-                return;
-
-            using (var session = Driver.Session())
-            {
-                var result = session.Run("MATCH (n) DETACH DELETE n");
-                result.Consume();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
 
         protected async Task<int> CountPersonAsync(string name)
         {

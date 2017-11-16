@@ -31,7 +31,7 @@ namespace Neo4j.Driver.IntegrationTests
     {
         private IDriver Driver => Server.Driver;
 
-        public BookmarkIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) : base(output, fixture)
+        public BookmarkIT(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -60,7 +60,7 @@ namespace Neo4j.Driver.IntegrationTests
 
                 using (var tx = session.BeginTransaction())
                 {
-                    tx.Run("CREATE (a:Person)");
+                    tx.Run($"CREATE (a:{Label})");
                     tx.Failure();
                 }
                 session.LastBookmark.Should().Be(bookmark);
@@ -147,11 +147,12 @@ namespace Neo4j.Driver.IntegrationTests
                 queue.Enqueue(BookmarkNum(session.LastBookmark));
 
                 queue.Count.Should().Be(2);
-                long value;
-                queue.TryDequeue(out value).Should().BeTrue();
-                value.Should().Be(lastBookmarkNum + 1);
-                queue.TryDequeue(out value).Should().BeTrue();
-                value.Should().Be(lastBookmarkNum + 2);
+
+                queue.TryDequeue(out var value).Should().BeTrue();
+                value.Should().BeGreaterThan(lastBookmarkNum);
+                
+                queue.TryDequeue(out var nextValue).Should().BeTrue();
+                nextValue.Should().BeGreaterThan(value);
             }
         }
 
@@ -162,11 +163,11 @@ namespace Neo4j.Driver.IntegrationTests
             return Convert.ToInt64(bookmark.Substring(BookmarkHeader.Length));
         }
 
-        private static void CreateNodeInTx(ISession session, string bookmark = null)
+        private void CreateNodeInTx(ISession session, string bookmark = null)
         {
             using (var tx = ((Session)session).BeginTransaction(bookmark))
             {
-                tx.Run("CREATE (a:Person)");
+                tx.Run($"CREATE (a:{Label})");
                 tx.Success();
             }
         }

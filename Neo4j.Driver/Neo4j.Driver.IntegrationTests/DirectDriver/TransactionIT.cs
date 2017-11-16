@@ -29,7 +29,7 @@ namespace Neo4j.Driver.IntegrationTests
     {
         private IDriver Driver => Server.Driver;
 
-        public TransactionIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) : base(output, fixture)
+        public TransactionIT(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -66,14 +66,14 @@ namespace Neo4j.Driver.IntegrationTests
             {
                 var createResult = session.WriteTransaction(tx =>
                 {
-                    var result = tx.Run("CREATE (n) RETURN count(n)");
+                    var result = tx.Run($"CREATE (n:{Label}) RETURN count(n)");
                     return result.Single()[0].ValueAs<int>();
                 });
 
                 // the read operation should see the commited write tx
                 var matchResult = session.ReadTransaction(tx =>
                 {
-                    var result = tx.Run("MATCH (n) RETURN count(n)");
+                    var result = tx.Run($"MATCH (n:{Label}) RETURN count(n)");
                     return result.Single()[0].ValueAs<int>();
                 });
 
@@ -88,7 +88,7 @@ namespace Neo4j.Driver.IntegrationTests
             {
                 var createResult = session.WriteTransaction(tx =>
                 {
-                    var result = tx.Run("CREATE (n) RETURN count(n)");
+                    var result = tx.Run($"CREATE (n:{Label}) RETURN count(n)");
                     var created = result.Single()[0].ValueAs<int>();
                     tx.Failure();
                     return created;
@@ -97,7 +97,7 @@ namespace Neo4j.Driver.IntegrationTests
                 // the read operation should not see the commited write tx
                 var matchResult = session.ReadTransaction(tx =>
                 {
-                    var result = tx.Run("MATCH (n) RETURN count(n)");
+                    var result = tx.Run($"MATCH (n:{Label}) RETURN count(n)");
                     return result.Single()[0].ValueAs<int>();
                 });
 
@@ -112,7 +112,7 @@ namespace Neo4j.Driver.IntegrationTests
             {
                 Record.Exception(()=>session.WriteTransaction(tx =>
                 {
-                    tx.Run("CREATE (n) RETURN count(n)");
+                    tx.Run($"CREATE (n:{Label}) RETURN count(n)");
                     tx.Success();
                     throw new ProtocolException("Broken");
                 })).Should().NotBeNull();
@@ -120,7 +120,7 @@ namespace Neo4j.Driver.IntegrationTests
                 // the read operation should not see the commited write tx
                 var matchResult = session.ReadTransaction(tx =>
                 {
-                    var result = tx.Run("MATCH (n) RETURN count(n)");
+                    var result = tx.Run($"MATCH (n:{Label}) RETURN count(n)");
                     return result.Single()[0].ValueAs<int>();
                 });
                 matchResult.Should().Be(0);

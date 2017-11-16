@@ -28,7 +28,7 @@ namespace Neo4j.Driver.IntegrationTests
     {
         private IDriver Driver => Server.Driver;
 
-        public SessionIT(ITestOutputHelper output, StandAloneIntegrationTestFixture fixture) : base(output, fixture)
+        public SessionIT(ITestOutputHelper output) : base(output)
         {
         }
 
@@ -94,8 +94,8 @@ namespace Neo4j.Driver.IntegrationTests
             using (var tx = session.BeginTransaction())
             {
                 // clean db
-                tx.Run("MATCH (n) DETACH DELETE n RETURN count(*)");
-                var result = tx.Run("CREATE (n {name:'Steve Brook'}) RETURN n.name");
+                tx.Run($"MATCH (n:{Label}) DETACH DELETE n RETURN count(*)");
+                var result = tx.Run($"CREATE (n:{Label} {{name:'Steve Brook'}}) RETURN n.name");
 
                 var record = result.Single();
                 record["n.name"].Should().Be("Steve Brook");
@@ -162,7 +162,7 @@ namespace Neo4j.Driver.IntegrationTests
                 // The following code is the same as using(var tx = session.BeginTx()) {...}
                 // While we have the full control of where the error is thrown
                 var tx = session.BeginTransaction();
-                tx.Run("CREATE (a { name: 'lizhen' })");
+                tx.Run($"CREATE (a:{Label} {{ name: 'lizhen' }})");
                 tx.Run("Invalid Cypher");
                 tx.Success();
                 var ex = Record.Exception(() => tx.Dispose());
@@ -172,7 +172,7 @@ namespace Neo4j.Driver.IntegrationTests
                 // Then can still run more afterwards
                 using (var anotherTx = session.BeginTransaction())
                 {
-                    var result = anotherTx.Run("MATCH (a {name : 'lizhen'}) RETURN count(a)");
+                    var result = anotherTx.Run($"MATCH (a:{Label} {{name : 'lizhen'}}) RETURN count(a)");
                     result.Single()[0].ValueAs<int>().Should().Be(0);
                 }
             }
